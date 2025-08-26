@@ -35,7 +35,7 @@ func (todos *Todos) Add(title string) {
 func (todos *Todos) List() Todos {
 	return *todos
 }
-func (todos *Todos) find(index int) (*Todo, error) {
+func (todos *Todos) Find(index int) (*Todo, error) {
 	for i, todo := range *todos {
 		if i == index {
 			return &todo, nil
@@ -53,7 +53,7 @@ func (todos *Todos) validateIndex(index int) error {
 	return nil
 }
 
-func (todos *Todos) delete(index int) error {
+func (todos *Todos) Delete(index int) error {
 	if err := todos.validateIndex(index); err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (todos *Todos) toggle(index int) error {
 
 	return nil
 }
-func (todos *Todos) edit(index int, title string) error {
+func (todos *Todos) Edit(index int, title string) error {
 	if err := todos.validateIndex(index); err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ func (todos *Todos) edit(index int, title string) error {
 } */
 func (todos *Todos) print() {
 	t := table.New(os.Stdout)
-	t.SetHeaders("ID", "Title", "Created At", "Completed At", "Completed")
+	t.SetHeaders("#", "Title", "Completed", "Created At", "Completed At")
 
 	for index, todo := range *todos {
 		var completedAtStr string
@@ -115,10 +115,10 @@ func (todos *Todos) print() {
 			// strconv.Itoa(todo.ID),
 			strconv.Itoa(index),
 			todo.Title,
+			completedStr,
 			todo.CreatedAt.Format(time.RFC3339),
 			completedAtStr,
 			// fmt.Sprintf("%v", todo.Completed),
-			completedStr,
 		)
 	}
 	t.Render()
